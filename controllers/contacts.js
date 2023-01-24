@@ -4,7 +4,7 @@ const operations = require('../models/contacts');
 // Get all contacts
 const getAll = async (req, res) => {
   const result = await operations.listContacts();
-  res.json({
+  res.status(200).json({
     status: 'success',
     code: 200,
     data: {
@@ -20,7 +20,7 @@ const getById = async (req, res, next) => {
   if (!result) {
     return next(createError(404, 'Not found'));
   }
-  res.json({
+  res.status(200).json({
     status: 'success',
     code: 200,
     data: {
@@ -32,7 +32,7 @@ const getById = async (req, res, next) => {
 // Add new contact
 const addContact = async (req, res) => {
   const result = await operations.addContact(req.body);
-  res.json({
+  res.status(201).json({
     status: 'success',
     code: 201,
     message: 'contact added',
@@ -49,7 +49,7 @@ const deleteContact = async (req, res, next) => {
   if (!result) {
     return next(createError(404, 'Not found'));
   }
-  res.json({
+  res.status(200).json({
     status: 'success',
     code: 200,
     message: 'contact deleted',
@@ -59,14 +59,12 @@ const deleteContact = async (req, res, next) => {
 // Update contact by id
 const updateContact = async (req, res, next) => {
   const { contactId } = req.params;
-  if (!req.body) {
-    return next(createError(400, 'Missing fields'));
-  }
+  
   const result = await operations.updateContact(contactId, req.body);
   if (!result) {
     return next(createError(404, 'Not found'));
   }
-  res.json({
+  res.status(200).json({
     status: 'success',
     code: 200,
     message: 'contact updated',
