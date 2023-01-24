@@ -1,3 +1,4 @@
+
 const express = require('express');
 const router = express.Router();
 
@@ -5,27 +6,19 @@ const { validation, ctrlWrapper: ctrl } = require('../../middlewares');
 const { schemaContact: schema } = require('../../schemas');
 const { contacts } = require('../../controllers');
 
-// Get all contacts
+// Get all contacts -> /api/contacts
 router.get('/', ctrl(contacts.getAll));
 
-// Get contact by id
+// Get contact by id -> /api/contacts/id
 router.get('/:contactId', ctrl(contacts.getById));
 
-// Add new contact
-router.post(
-  '/',
-  validation(schema.schemaAddContact),
-  ctrl(contacts.addContact)
-);
+// Add new contact -> /api/contacts with new contact
+router.post('/', validation(schema), ctrl(contacts.addContact));
 
-// Update contact by id
-router.put(
-  '/:contactId',
-  validation(schema.schemaUpdateContact),
-  ctrl(contacts.updateContact)
-);
+// Update contact by id -> /api/contacts/id with updated contact
+router.put('/:contactId', validation(schema), ctrl(contacts.updateContact));
 
-// Delete contact by id
+// Delete contact by id -> /api/contacts/id and then Get without this contact
 router.delete('/:contactId', ctrl(contacts.deleteContact));
 
 module.exports = router;
