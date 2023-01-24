@@ -1,5 +1,3 @@
-// const fs = require('fs/promises')
-
 const fs = require('fs/promises');
 const path = require('path');
 const { v4 } = require('uuid');
@@ -47,19 +45,17 @@ const addContact = async body => {
 };
 
 const updateContact = async (contactId, body) => {
-  
+  const { name, email, phone } = body;
   const contacts = await listContacts();
   const index = contacts.findIndex(contact => contact.id === contactId);
-  
+  const updatedContact = contacts[index];
   if (index !== -1) {
-    const contact = await getContactById(contactId);
-    contacts[index] = {
-      ...contact,
-      ...body,  
-    };
+    contacts[index].name = name;
+    contacts[index].email = email;
+    contacts[index].phone = phone;
     await fs.writeFile(contactsPath, JSON.stringify(contacts));
   }
-  return contacts[index] || null;
+  return updatedContact || null;
 };
 
 module.exports = {
