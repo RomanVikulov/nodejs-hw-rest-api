@@ -12,4 +12,5 @@ const validation = schema => {
     next();
   };
 };
+
 module.exports = validation;
