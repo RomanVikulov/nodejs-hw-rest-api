@@ -1,25 +1,24 @@
-const express = require('express')
 
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 
-router.get('/', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+const { validation, ctrlWrapper: ctrl } = require('../../middlewares');
+const { schemaContact: schema } = require('../../schemas');
+const { contacts } = require('../../controllers');
 
-router.get('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+// Get all contacts -> /api/contacts
+router.get('/', ctrl(contacts.getAll));
 
-router.post('/', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+// Get contact by id -> /api/contacts/id
+router.get('/:contactId', ctrl(contacts.getById));
 
-router.delete('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+// Add new contact -> /api/contacts with new contact
+router.post('/', validation(schema.schemaAddContact), ctrl(contacts.addContact));
 
-router.put('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+// Update contact by id -> /api/contacts/id with updated contact
+router.put('/:contactId', validation(schema.schemaUpdateContact), ctrl(contacts.updateContact));
 
-module.exports = router
+// Delete contact by id -> /api/contacts/id and then Get without this contact
+router.delete('/:contactId', ctrl(contacts.deleteContact));
+
+module.exports = router;
