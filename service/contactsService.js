@@ -5,20 +5,22 @@ const getAll = async () => {
   return Contact.find();
 };
 
-// Get contact by id
+// Get contacts by id
 const getById = async id => {
   return Contact.findById({ _id: id });
 };
 
-// Add new contact
+// POST new contacts
 const addContact = async body => {
   return Contact.create(body);
 };
 
-// Update contact by id
+// PUT contacts by id
 const updateContact = async (id, body) => {
   return Contact.findByIdAndUpdate({ _id: id }, body, { new: true });
 };
+
+// PATCH favorite
 const updateStatusContact = async (id, body) => {
   return Contact.findByIdAndUpdate(
     { _id: id },
@@ -27,7 +29,7 @@ const updateStatusContact = async (id, body) => {
   );
 };
 
-// Delete contact by id
+// Delete contacts by id
 const deleteContact = async id => {
   return Contact.findByIdAndRemove({ _id: id });
 };
