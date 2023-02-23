@@ -28,19 +28,8 @@ const schemaContact = new Schema(
 
 const Contact = model('contact', schemaContact);
 
-const schemaAddContact = Joi.object({
-  name: Joi.string().min(3).required(),
-  email: Joi.string()
-    .email({
-      minDomainSegments: 2,
-      tlds: { allow: ['com', 'net', 'org'] },
-    })
-    .required(),
-  phone: Joi.string().min(6).required(),
-  favorite: Joi.boolean(),
-});
-
-const schemaUpdateContact = Joi.object({
+// schemas validation
+const schemaBase = Joi.object().keys({
   name: Joi.string().min(3),
   email: Joi.string().email({
     minDomainSegments: 2,
@@ -50,8 +39,16 @@ const schemaUpdateContact = Joi.object({
   favorite: Joi.boolean(),
 });
 
-const schemaUpdateStatusContact = Joi.object({
-  favorite: Joi.boolean().required(),
+const schemaAddContact = schemaBase.keys({
+  name: Joi.required(),
+  email: Joi.required(),
+  phone: Joi.required(),
+});
+
+const schemaUpdateContact = schemaBase.keys();
+
+const schemaUpdateStatusContact = schemaBase.keys({
+  favorite: Joi.required(),
 });
 
 const schemas = {
